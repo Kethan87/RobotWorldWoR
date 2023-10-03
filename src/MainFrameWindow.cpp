@@ -493,7 +493,6 @@ namespace Application
 								[this](wxCommandEvent& anEvent){this->OnStopListening(anEvent);}),
 					wxGBPosition( 5, 3),
 					wxGBSpan( 1, 1),
-					asdasdasd
 					wxGROW);
 
 		sizer->Add( 5, 5,
