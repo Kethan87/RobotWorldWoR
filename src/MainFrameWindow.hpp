@@ -111,6 +111,8 @@ namespace Application
 			void OnStartListening( wxCommandEvent& anEvent);
 			void OnSendMessage( wxCommandEvent& anEvent);
 			void OnStopListening( wxCommandEvent& anEvent);
+			void OnKalManFilter( wxCommandEvent& anEvent);
+			void OnParticleFilter( wxCommandEvent& anEvent);
 
 			/**
 			 * Draws the grid for the given panel. Useful for debugging the layout of the grid.

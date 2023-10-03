@@ -494,6 +494,18 @@ namespace Application
 					wxGBPosition( 5, 3),
 					wxGBSpan( 1, 1),
 					wxGROW);
+		sizer->Add( makeButton( panel,
+								"Kalman",
+								[this](wxCommandEvent& anEvent){this->OnKalManFilter(anEvent);}),
+					wxGBPosition( 7, 1),
+					wxGBSpan( 1, 1),
+					wxGROW);
+		sizer->Add( makeButton( panel,
+								"Particle",
+								[this](wxCommandEvent& anEvent){this->OnParticleFilter(anEvent);}),
+					wxGBPosition( 7, 2),
+					wxGBSpan( 1, 1),
+					wxGROW);
 
 		sizer->Add( 5, 5,
 					wxGBPosition( 6, 4),
@@ -712,6 +724,20 @@ namespace Application
 		{
 			robot->startCommunicating();
 		}
+	}
+	/**
+	 *
+	 */
+	void MainFrameWindow::OnKalManFilter( wxCommandEvent& UNUSEDPARAM(anEvent))
+	{
+		Application::Logger::log(std::string("The current modus is Kalman."));
+	}
+	/**
+	 *
+	 */
+	void MainFrameWindow::OnParticleFilter( wxCommandEvent& UNUSEDPARAM(anEvent))
+	{
+		Application::Logger::log(std::string("The current modus is Particle."));
 	}
 	/**
 	 *
