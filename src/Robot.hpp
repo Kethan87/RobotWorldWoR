@@ -13,6 +13,8 @@
 #include "Point.hpp"
 #include "Region.hpp"
 #include "Size.hpp"
+#include "Particle.hpp"
+#include "ParticleFilter.hpp"
 
 #include <iostream>
 #include <memory>
@@ -254,7 +256,20 @@ namespace Model
 
 			// Radar
 			PointCloud currentRadarPointCloud; // The latest radar point cloud
+
+			//Lidar
+			PointCloud currentLidarRadarPointCloud;
 			//@}
+
+			const int NUMBER_OF_PARTICLES = 30;
+
+			std::vector<wxPoint> kalmanPoints;
+
+			std::vector<Particle> particles;
+			std::vector<Particle> lastParticles;
+
+			ParticleFilter particleFilter;
+
 
 		protected:
 			/**
@@ -330,6 +345,15 @@ namespace Model
 			 *
 			 */
 			Messaging::ServerPtr server;
+			/*
+			 *
+			 */
+			std::vector<OrientationPercept*> variablesCompassOdometer;
+			bool firstTimeKalman;
+
+			double processErrorX;
+
+			double processErrorY;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

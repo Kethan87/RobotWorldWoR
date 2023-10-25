@@ -38,7 +38,20 @@ robotworld_SOURCES 	= 	AbstractActuator.cpp	\
 						WayPoint.cpp	\
 						WayPointShape.cpp	\
 						WidgetTraceFunction.cpp	\
-						Widgets.cpp						
+						Widgets.cpp	\
+						Matrix.inc	\
+						CompassOdometerSensor.hpp	\
+						CompassOdometerSensor.cpp	\
+						OrientationPercept.hpp	\
+						OrientationPercept.cpp	\
+						CompassLidarSensor.hpp	\
+						CompassLidarSensor.cpp	\
+						Particle.hpp	\
+						Particle.cpp	\
+						ParticleFilter.hpp	\
+						ParticleFilter.cpp	\
+						OrientationStimulus.hpp	\
+						OrientationStimulus.cpp
 
 robotworld_CPPFLAGS 	=	$(AM_CPPFLAGS) $(ROBOTWORLD_CPPFLAGS) $(WX_CPPFLAGS)
 

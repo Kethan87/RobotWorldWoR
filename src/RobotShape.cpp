@@ -10,6 +10,8 @@
 #include "RobotWorldCanvas.hpp"
 #include "Shape2DUtils.hpp"
 #include "Trace.hpp"
+#include "CompassLidarSensor.hpp"
+#include "CompassOdometerSensor.hpp"
 
 #include <cmath>
 
@@ -93,6 +95,18 @@ namespace View
 		drawRobot( dc);
 
 		drawLaser( dc);
+		if(Model::CompassLidarSensor::particleFilter)
+		{
+			drawLidar(dc);
+			drawParticles(dc);
+		}
+
+		if(Model::CompassOdometerSensor::kalmanFilter)
+		{
+			drawKalmanPoints(dc);
+		}
+
+
 	}
 	/**
 	 *
@@ -258,6 +272,59 @@ namespace View
 				dc.SetPen( wxPen(  "RED", borderWidth, wxPENSTYLE_SOLID));
 				dc.DrawCircle( d.point, 1);
 			}
+		}
+	}
+	/**
+	 *
+	 */
+	void RobotShape::drawLidar(wxDC& dc)
+	{
+		double angle = Utils::Shape2DUtils::getAngle( getRobot()->getFront());
+		angle = Utils::MathUtils::toDegrees(angle);
+		dc.SetPen(wxPen(  "YELLOW", 1, wxPENSTYLE_SOLID));
+		for (int i = 0; i < 180; i++)
+		{
+		    double currentAngle = angle + (i * 2);
+		    dc.DrawLine(centre.x, centre.y, static_cast<int>(centre.x + std::cos(Utils::MathUtils::toRadians(currentAngle)) * Model::laserBeamLength), static_cast<int>(centre.y + std::sin(Utils::MathUtils::toRadians(currentAngle)) * Model::laserBeamLength));
+
+		}
+////In comments, because it will crash when I draw circles, Reason: I don't know;
+//		for (const Model::DistancePercept &d : getRobot()->currentLidarRadarPointCloud)
+//		{
+//			if (d.point != wxDefaultPosition || (d.point.x != Model::noObject && d.point.y != Model::noObject))
+//			{
+//				dc.SetPen( wxPen(  "RED", borderWidth, wxPENSTYLE_SOLID));
+//				dc.DrawCircle( d.point, 1);
+//			}
+//		}
+	}
+
+	void RobotShape::drawParticles(wxDC& dc)
+	{
+		for(int i = 0; i < static_cast<int>(getRobot()->particles.size()); ++i)
+		{
+			dc.SetPen( wxPen(  "GREEN", borderWidth, wxPENSTYLE_SOLID));
+			dc.DrawCircle( getRobot()->particles.at(i).getPosition(), 1);
+		}
+
+		double angle = 0;
+////TO DRAW LASERS FROM PARTICLES
+//		for(int j = 0; j < static_cast<int>(getRobot()->particles.size()); ++j)
+//		{
+//			for(int i = 0; i < 180; ++i)
+//			{
+//				double currentAngle = angle + (i * 2);
+//				dc.DrawLine(getRobot()->particles.at(j).getPosition().x, getRobot()->particles.at(j).getPosition().y, static_cast<int>(getRobot()->particles.at(j).getPosition().x + std::cos(Utils::MathUtils::toRadians(currentAngle)) * Model::laserBeamLength), static_cast<int>(getRobot()->particles.at(j).getPosition().y + std::sin(Utils::MathUtils::toRadians(currentAngle)) * Model::laserBeamLength));
+//			}
+//		}
+	}
+
+	void RobotShape::drawKalmanPoints(wxDC& dc)
+	{
+		dc.SetPen( wxPen(  "RED", borderWidth, wxPENSTYLE_SOLID));
+		for(int i = 0; i < static_cast<int>(getRobot()->kalmanPoints.size()); ++i)
+		{
+			dc.DrawCircle( getRobot()->kalmanPoints.at(i), 1);
 		}
 	}
 } // namespace View

@@ -19,6 +19,8 @@
 #include "StdOutTraceFunction.hpp"
 #include "Trace.hpp"
 #include "WidgetTraceFunction.hpp"
+#include "CompassOdometerSensor.hpp"
+#include "CompassLidarSensor.hpp"
 
 #include <array>
 #include <iostream>
@@ -675,7 +677,7 @@ namespace Application
 		{
 			case 0:
 			{
-				robotWorldCanvas->populate( 4);
+				robotWorldCanvas->populate( 8);
 				// TODO Do something...
 //				std::shared_ptr<View::RobotShape> robotShape = std::dynamic_pointer_cast<View::RobotShape>(robotWorldCanvas->getSelectedShape());
 //				if(robotShape)
@@ -730,14 +732,33 @@ namespace Application
 	 */
 	void MainFrameWindow::OnKalManFilter( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Application::Logger::log(std::string("The current modus is Kalman."));
+		bool kalmanFilter = Model::CompassOdometerSensor::kalmanFilter;
+		if(kalmanFilter)
+		{
+			Model::CompassOdometerSensor::kalmanFilter = false;
+			Application::Logger::log(std::string("Kalman Filter is off"));
+		} else
+		{
+			Model::CompassOdometerSensor::kalmanFilter = true;
+			Application::Logger::log(std::string("Kalman Filter is on"));
+		}
+
 	}
 	/**
 	 *
 	 */
 	void MainFrameWindow::OnParticleFilter( wxCommandEvent& UNUSEDPARAM(anEvent))
 	{
-		Application::Logger::log(std::string("The current modus is Particle."));
+		bool particleFilter = Model::CompassLidarSensor::particleFilter;
+		if(particleFilter)
+		{
+			Model::CompassLidarSensor::particleFilter = false;
+			Application::Logger::log(std::string("Particle Filter is off"));
+		} else
+		{
+			Model::CompassLidarSensor::particleFilter = true;
+			Application::Logger::log(std::string("Particle Filter is on"));
+		}
 	}
 	/**
 	 *

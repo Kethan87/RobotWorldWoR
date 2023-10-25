@@ -8,3 +8,5 @@
 /configure~
 /RobotWorld.cppcheck
 linux/src/robotworld
+linux/config.log
+src/Makefile.in

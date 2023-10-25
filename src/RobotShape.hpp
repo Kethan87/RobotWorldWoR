@@ -149,6 +149,22 @@ namespace View
 			 *
 			 */
 			void drawLaser( wxDC& dc);
+			/**
+			 *
+			 */
+			void drawLidar(wxDC& dc);
+			/**
+			 *
+			 */
+			void drawParticles(wxDC& dc);
+			/**
+			 *
+			 */
+			void drawKalmanPoints(wxDC& dc);
+			/**
+			 *
+			 */
+			const uint8_t MAX_LASERS = 180;
 	};
 } // namespace View
 #endif // ROBOTSHAPE_HPP_
