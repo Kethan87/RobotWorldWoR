@@ -282,11 +282,7 @@ namespace Model
 			wxPoint( 100, 25), wxPoint( 700, 25),
 			wxPoint( 75, 200), wxPoint( 250, 600),
 			wxPoint( 800, 300), wxPoint( 800, 700),
-			wxPoint( 50, 825), wxPoint( 600, 825),
-			wxPoint(0, 0), wxPoint(0, 1024),
-			wxPoint(1024,0), wxPoint(1024, 1024),
-			wxPoint(0, 1024), wxPoint(1024, 1024),
-			wxPoint(0, 0), wxPoint(1024, 0)};
+			wxPoint( 50, 825), wxPoint( 600, 825)};
 
 		for (int i = 0; i < 2 * aNumberOfWalls; i += 2)
 		{

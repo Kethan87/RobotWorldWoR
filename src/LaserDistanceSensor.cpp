@@ -74,13 +74,12 @@ namespace Model
 				{
 					return std::make_shared<DistancePercept>( wxPoint(noObject,noObject));
 				}
-				wxPoint endpoint{	static_cast< int >( robotLocation.x + std::cos( distanceStimulus->angle)*distanceStimulus->distance),
+				wxPoint endpoint{static_cast< int >( robotLocation.x + std::cos( distanceStimulus->angle)*distanceStimulus->distance),
 								static_cast< int >( robotLocation.y + std::sin( distanceStimulus->angle)*distanceStimulus->distance)};
 
 				return std::make_shared<DistancePercept>( endpoint);
 			}
 		}
-
 		return std::make_shared<DistancePercept>( wxPoint(invalidDistance,invalidDistance));
 	}
 	/**

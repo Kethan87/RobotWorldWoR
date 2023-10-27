@@ -39,24 +39,23 @@ namespace Model
 		    std::normal_distribution<> noiseCompass{compasStddev * -1,compasStddev};
 		    wxPoint robotLocation = robot->getPosition();
 		    double randomAngleDeviation = Utils::MathUtils::toRadians(noiseCompass(gen));
-		    std::cout << "DEVIATION: " << randomAngleDeviation << std::endl;
 		    double angle = Utils::Shape2DUtils::getAngle(robot->getFront()) + randomAngleDeviation;
 		    wxPoint distancePoint{static_cast<int>(robotLocation.x + std::cos(angle)),
 				static_cast<int>(robotLocation.y + std::sin(angle))};
 		    double distance = Utils::Shape2DUtils::distance(lastPosition, distancePoint) + noiseOdometer(gen);
 		    uint16_t deltaXPosition = std::abs(lastPosition.x - distancePoint.x);
 		    uint16_t deltaYPosition = std::abs(lastPosition.y - distancePoint.y);
-		    std::cout << "DELTA X POSITION STIMULUS: " << deltaXPosition << std::endl;
-		    std::cout << "DELTA Y POSITION STIMULUS: " << deltaYPosition << std::endl;
+//		    std::cout << "DELTA X POSITION STIMULUS: " << deltaXPosition << std::endl;
+//		    std::cout << "DELTA Y POSITION STIMULUS: " << deltaYPosition << std::endl;
 		    if(lastPosition.x == FIRSTRUN_POSITION && lastPosition.y == FIRSTRUN_POSITION)
 		    {
 		    	distance = 0;
-		    	deltaXPosition = robot->getPosition().x;
-		    	deltaYPosition = robot->getPosition().y;
+		    	deltaXPosition = 0;
+		    	deltaYPosition = 0;
 		    }
 //		    lastPosition = robot->getPosition();
 		    lastPosition = distancePoint;
-		    std::cout << "STIMULUS ANGLE: " << angle << std::endl;
+//		    std::cout << "STIMULUS ANGLE: " << angle << std::endl;
 		    return std::make_shared< OrientationStimulus >(angle, distance, deltaXPosition, deltaYPosition);
 		}
 

@@ -23,6 +23,7 @@ namespace Model
 	class CompassLidarSensor : public AbstractSensor
 	{
 	public:
+		static wxPoint lastPosition;
 		static bool particleFilter;
 		static double lidarStddev;
 		explicit CompassLidarSensor(Robot& aRobot);
@@ -32,7 +33,9 @@ namespace Model
 
 		virtual std::shared_ptr< AbstractPercept > getPerceptFor( std::shared_ptr< AbstractStimulus > anAbstractStimulus) const override;
 	private:
+		const int FIRSTRUN_POSITION = 1025;
 		const int LASERBEAM_LENGTH = 1024;
+		const int LASERBEAMS = 180;
 		std::vector<wxPoint> lidarMeasures;
 	};
 }

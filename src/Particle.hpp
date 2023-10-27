@@ -12,18 +12,17 @@
 
 namespace Model
 {
-//	static uint16_t totalParticleWeight = 0;
 class Particle {
 public:
 	Particle(wxPoint aPosition, double aWeight);
-	Particle();
 	virtual ~Particle();
-	PointCloud measurement(wxPoint position);
+	PointCloud measurementLidar(wxPoint position);
 	Particle& operator=(const Particle& particle);
 
 	wxPoint getPosition();
 	void setPosition(wxPoint newPosition);
 	PointCloud getLidarMeasurements();
+	void setLidarMeasurements(PointCloud newLidarMeasurements);
 	double getWeight();
 	void setWeight(double newWeight);
 	double getLidarStddev();

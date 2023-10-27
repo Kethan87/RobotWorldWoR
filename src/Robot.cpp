@@ -581,10 +581,33 @@ namespace Model
 							DistancePercepts* distancePercepts = dynamic_cast<DistancePercepts*>(percept.value().get());
 							for(int i = 0; i < distancePercepts->pointCloud.size(); ++i)
 							{
-								currentLidarRadarPointCloud.push_back(distancePercepts->pointCloud.at(i));
-//								std::cout << "X" << i << ": " <<  distancePercepts->pointCloud.at(i).point.x << std::endl;
-//								std::cout << "Y" << i << ": " << distancePercepts->pointCloud.at(i).point.y << std::endl;
+								if(currentLidarRadarPointCloud.size() < distancePercepts->pointCloud.size())
+								{
+									currentLidarRadarPointCloud.push_back(distancePercepts->pointCloud.at(i));
+								} else
+								{
+									currentLidarRadarPointCloud.at(i) = distancePercepts->pointCloud.at(i);
+								}
 							}
+							double deltaX = 0;
+							double deltaY = 0;
+							if(Model::CompassLidarSensor::lastPosition.x == 1025 && Model::CompassLidarSensor::lastPosition.y == 1025)
+							{
+								deltaX = 0;
+								deltaY = 0;
+								Model::CompassLidarSensor::lastPosition = getPosition();
+							} else
+							{
+								deltaX = getPosition().x - Model::CompassLidarSensor::lastPosition.x ;
+								deltaY = getPosition().y - Model::CompassLidarSensor::lastPosition.y;
+								Model::CompassLidarSensor::lastPosition = getPosition();
+							}
+//							std::cout << "DELTA X: " << deltaX << std::endl;
+//							std::cout << "DELTA Y: " << deltaY << std::endl;
+							particleFilter.controlUpdate(deltaX, deltaY, 2, 2);
+							particleFilter.measurementUpdate(currentLidarRadarPointCloud);
+							std::vector<Particle> newParticles = particleFilter.resampling();
+							particleFilter.setParticles(newParticles);
 
 						} else if(!Model::CompassOdometerSensor::kalmanFilter)
 						{
@@ -701,6 +724,12 @@ namespace Model
 			}
 		}
 		return false;
+	}
+
+
+	PointCloud Robot::getCurrentLidarCloud()
+	{
+		return currentLidarRadarPointCloud;
 	}
 
 } // namespace Model

@@ -2,20 +2,15 @@
 
 namespace Model
 {
-	Particle::Particle(wxPoint aPosition, double aWeight): position(aPosition), weight(aWeight), lidarMeasurements(measurement(aPosition)), lidarStddev(10), LASERBEAM_LENGTH(1024), lastWeight(0) {
+	Particle::Particle(wxPoint aPosition, double aWeight): position(aPosition), weight(aWeight), lidarMeasurements(measurementLidar(aPosition)), lidarStddev(10), LASERBEAM_LENGTH(1024), lastWeight(0) {
 		// TODO Auto-generated constructor stub
-	}
-
-	Particle::Particle() : position(wxPoint(0,0)), weight(0.0), lidarMeasurements(measurement(position)), lidarStddev(10), LASERBEAM_LENGTH(1024), lastWeight(0)
-	{
-
 	}
 
 	Particle::~Particle() {
 		// TODO Auto-generated destructor stub
 	}
 
-	PointCloud Particle::measurement(wxPoint position)
+	PointCloud Particle::measurementLidar(wxPoint position)
 	{
 		std::random_device rd{};
 		std::mt19937 gen{rd()};
@@ -32,8 +27,8 @@ namespace Model
 				wxPoint wallPoint1 = wall->getPoint1();
 				wxPoint wallPoint2 = wall->getPoint2();
 				std::vector<std::pair<double, double>> anglesAndDistances;
-				wxPoint laserEndpoint { static_cast<int>(position.x+ std::cos(currentAngle) * LASERBEAM_LENGTH + noiseLidar(gen)),
-					static_cast<int>(position.y + std::sin(currentAngle) * LASERBEAM_LENGTH + noiseLidar(gen)) };
+				wxPoint laserEndpoint { static_cast<int>(position.x+ std::cos(currentAngle) * LASERBEAM_LENGTH),
+					static_cast<int>(position.y + std::sin(currentAngle) * LASERBEAM_LENGTH) };
 				wxPoint interSection = Utils::Shape2DUtils::getIntersection(wallPoint1, wallPoint2, position, laserEndpoint);
 				if (interSection != wxDefaultPosition) {
 					double distance = Utils::Shape2DUtils::distance(position,interSection);
@@ -46,8 +41,8 @@ namespace Model
 			if (!objectFound) {
 				measurements.push_back(DistancePercept(wxPoint(noObject, noObject)));
 			} else {
-				wxPoint endPoint{static_cast< int >( position.x + std::cos(currentAngle)*shortestDistanceIntersection),
-												static_cast< int >( position.y + std::sin(currentAngle)*shortestDistanceIntersection)};
+				wxPoint endPoint{static_cast< int >(std::cos(currentAngle)*shortestDistanceIntersection),
+												static_cast< int >(std::sin(currentAngle)*shortestDistanceIntersection)};
 				measurements.push_back(DistancePercept(endPoint));
 			}
 		}
@@ -61,7 +56,7 @@ namespace Model
 		{
 			position = particle.position;
 			weight = particle.weight;
-			lidarMeasurements = measurement(particle.position);
+			lidarMeasurements = measurementLidar(particle.position);
 		}
 		return *this;
 	}
@@ -74,6 +69,11 @@ namespace Model
 	PointCloud Particle::getLidarMeasurements()
 	{
 		return lidarMeasurements;
+	}
+
+	void Particle::setLidarMeasurements(PointCloud newLidarMeasurements)
+	{
+		lidarMeasurements = newLidarMeasurements;
 	}
 
 	double Particle::getWeight()

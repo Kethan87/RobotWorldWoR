@@ -677,7 +677,7 @@ namespace Application
 		{
 			case 0:
 			{
-				robotWorldCanvas->populate( 8);
+				robotWorldCanvas->populate(4);
 				// TODO Do something...
 //				std::shared_ptr<View::RobotShape> robotShape = std::dynamic_pointer_cast<View::RobotShape>(robotWorldCanvas->getSelectedShape());
 //				if(robotShape)

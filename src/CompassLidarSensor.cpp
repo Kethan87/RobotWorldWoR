@@ -25,6 +25,7 @@ namespace Model
 
 	bool CompassLidarSensor::particleFilter = true;
 	double CompassLidarSensor::lidarStddev = 10;
+	wxPoint CompassLidarSensor::lastPosition(1025,1025);
 
 	CompassLidarSensor::CompassLidarSensor(Robot& aRobot) : AbstractSensor(aRobot) {
 		// TODO Auto-generated constructor stub
@@ -38,11 +39,12 @@ namespace Model
 		{
 			std::random_device rd{};
 			std::mt19937 gen{rd()};
-			std::normal_distribution<> noiseLidar{lidarStddev * -1,lidarStddev};
+			std::normal_distribution<> noiseLidar{0,lidarStddev};
 			double angle = 0;
 			std::vector<WallPtr> walls = RobotWorld::getRobotWorld().getWalls();
-			std::vector<DistanceStimulus> stimulus;
-			for (int i = 0; i < 180; i++)
+			Stimuli stimulus;
+			wxPoint robotLocation = robot->getPosition();
+			for (int i = 0; i < LASERBEAMS; i++)
 			{
 				double shortestDistanceIntersection = LASERBEAM_LENGTH;
 				bool objectFound = false;
@@ -51,10 +53,9 @@ namespace Model
 				{
 				wxPoint wallPoint1 = wall->getPoint1();
 				wxPoint wallPoint2 = wall->getPoint2();
-				wxPoint robotLocation = robot->getPosition();
 				std::vector<std::pair<double, double>> anglesAndDistances;
-				    wxPoint laserEndpoint{static_cast<int>(robotLocation.x + std::cos(currentAngle) * LASERBEAM_LENGTH + noiseLidar(gen)) ,
-				    					static_cast<int>(robotLocation.y + std::sin(currentAngle) * LASERBEAM_LENGTH + noiseLidar(gen))};
+				    wxPoint laserEndpoint{static_cast<int>(robotLocation.x + std::cos(currentAngle) * LASERBEAM_LENGTH) ,
+				    					static_cast<int>(robotLocation.y + std::sin(currentAngle) * LASERBEAM_LENGTH )};
 				    wxPoint interSection = Utils::Shape2DUtils::getIntersection(wallPoint1,wallPoint2,robotLocation,laserEndpoint);
 				    if(interSection != wxDefaultPosition)
 				    {
@@ -63,11 +64,6 @@ namespace Model
 						{
 							objectFound = true;
 							shortestDistanceIntersection = distance;
-							if(i == 0)
-							{
-								std::cout << "Angle0: " << currentAngle << std::endl;
-								std::cout << "Distance0" << shortestDistanceIntersection << std::endl;
-							}
 						}
 				    }
 				}
@@ -76,7 +72,7 @@ namespace Model
 					stimulus.push_back(DistanceStimulus(noAngle, noDistance));
 				} else
 				{
-					stimulus.push_back(DistanceStimulus(currentAngle, shortestDistanceIntersection));
+					stimulus.push_back(DistanceStimulus(currentAngle, shortestDistanceIntersection + noiseLidar(gen)));
 				}
 			}
 			return std::make_shared<DistanceStimuli>(stimulus);
@@ -104,8 +100,8 @@ namespace Model
 						endPoints.push_back(DistancePercept(wxPoint(noObject, noObject)));
 					} else
 					{
-						wxPoint endPoint{static_cast< int >( robotLocation.x + std::cos(distanceStimuli->stimuli.at(i).angle)*distanceStimuli->stimuli.at(i).distance),
-								static_cast< int >( robotLocation.y + std::sin(distanceStimuli->stimuli.at(i).angle)*distanceStimuli->stimuli.at(i).distance)};
+						wxPoint endPoint{static_cast< int >(std::cos(distanceStimuli->stimuli.at(i).angle)*distanceStimuli->stimuli.at(i).distance),
+								static_cast< int >(std::sin(distanceStimuli->stimuli.at(i).angle)*distanceStimuli->stimuli.at(i).distance)};
 						endPoints.push_back(DistancePercept(endPoint));
 					}
 				}

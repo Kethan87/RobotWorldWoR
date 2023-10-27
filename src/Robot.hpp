@@ -247,6 +247,8 @@ namespace Model
 			virtual std::string asDebugString() const override;
 			//@}
 
+			PointCloud getCurrentLidarCloud();
+
 			/**
 			 * @name Variables for painting the sensor activity on the screen
 			 */
@@ -261,12 +263,11 @@ namespace Model
 			PointCloud currentLidarRadarPointCloud;
 			//@}
 
-			const int NUMBER_OF_PARTICLES = 30;
+			const int NUMBER_OF_PARTICLES = 200;
 
 			std::vector<wxPoint> kalmanPoints;
 
 			std::vector<Particle> particles;
-			std::vector<Particle> lastParticles;
 
 			ParticleFilter particleFilter;
 
