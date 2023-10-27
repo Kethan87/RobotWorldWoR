@@ -1,0 +1,17 @@
+Als je de configureerbare waardes wilt bepalen, dat kan je doen in een tekst (die moet in de root van het project staan) en voer je MAXIMAAL 3 cijfers in.
+De volgorde van cijfers is van belang om de volgende waardes te kunnen configureren.
+1ste cijfer voor de odometer
+2de cijfer voor de hoek van de compas
+3de cijfer voor de lasers van de lidar
+
+Bijvoorbeeld "test.txt"
+1
+2
+10
+
+1 is voor odometer
+2 is voor de hoek van de compas
+10 voor de lasers van de lidar
+
+DAARNAAST!!!!! als je van particle naar kalman wilt switchen, moet je ALTIJD eerst unpopulaten->switch van filter -> populate (je kan ze ook allebei gebruiken).
+Anders zou je de applicatie opnieuw moeten starten.
