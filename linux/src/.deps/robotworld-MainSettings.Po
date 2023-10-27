@@ -1,6 +1,0 @@
-robotworld-MainSettings.o: ../../src/MainSettings.cpp \
- /usr/include/stdc-predef.h ../../src/MainSettings.hpp \
- ../../src/Config.hpp
-/usr/include/stdc-predef.h:
-../../src/MainSettings.hpp:
-../../src/Config.hpp:

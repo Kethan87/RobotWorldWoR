@@ -9,7 +9,7 @@
 
 namespace Model
 {
-	ParticleFilter::ParticleFilter(std::vector<Particle> aParticlesForFilter, const uint16_t A_NUMBER_OF_PARTICLES) : particlesForFilter(aParticlesForFilter),  NUMBER_OF_PARTICLES(A_NUMBER_OF_PARTICLES), totalWeight(calculateTotalWeight(particlesForFilter)) {
+	ParticleFilter::ParticleFilter(const std::vector<Particle>& aParticlesForFilter, const uint16_t A_NUMBER_OF_PARTICLES) : particlesForFilter(aParticlesForFilter),  NUMBER_OF_PARTICLES(A_NUMBER_OF_PARTICLES), totalWeight(calculateTotalWeight(particlesForFilter)) {
 		// TODO Auto-generated constructor stub
 
 	}
@@ -60,7 +60,7 @@ namespace Model
 		for(int i = 0; i < NUMBER_OF_PARTICLES; ++i)
 		{
 			double totalDifferenceMeasurement = 0.0;
-			for(int j = 0; j < static_cast<int>(particlesForFilter.at(i).getLidarMeasurements().size()); ++j)
+			for(unsigned long j = 0; j < particlesForFilter.at(i).getLidarMeasurements().size(); ++j)
 			{
 				double distancePointMeasure = 0.0;
 				distancePointMeasure = Utils::Shape2DUtils::distance(particlesForFilter.at(i).getLidarMeasurements().at(j).point, lidarMeasurements.at(j).point);
@@ -84,7 +84,7 @@ namespace Model
 	    double totalWeight = calculateTotalWeight(particlesForFilter);
 
 	    std::vector<double> weights;
-	    for (int i = 0; i < static_cast<int>(particlesForFilter.size()); ++i) {
+	    for (unsigned long i = 0; i < particlesForFilter.size(); ++i) {
 	        weights.push_back(particlesForFilter.at(i).getWeight() / totalWeight);
 	    }
 
@@ -92,7 +92,6 @@ namespace Model
 
 	    for (int i = 0; i < NUMBER_OF_PARTICLES; ++i) {
 	        int index = dist(gen);
-	        std::cout << "CHOSEN ONE: " << index << std::endl;
 	        resampleParticles.push_back(particlesForFilter.at(index));
 	    }
 
@@ -107,7 +106,7 @@ namespace Model
 	double ParticleFilter::calculateTotalWeight(std::vector<Particle> particlesForFilter)
 	{
 		double totalWeight = 0.0;
-		for(int i = 0; i < static_cast<int>(particlesForFilter.size()); ++i)
+		for(unsigned long i = 0; i < particlesForFilter.size(); ++i)
 		{
 			totalWeight += particlesForFilter.at(i).getWeight();
 		}
@@ -127,7 +126,7 @@ namespace Model
 		return particlesForFilter;
 	}
 
-	void ParticleFilter::setParticles(std::vector<Particle>& newParticles)
+	void ParticleFilter::setParticles(const std::vector<Particle>& newParticles)
 	{
 		particlesForFilter = newParticles;
 	}

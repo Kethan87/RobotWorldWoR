@@ -213,37 +213,11 @@ class Matrix
 		 * @return a string representation of the matrix for printing on the screen
 		 */
 		std::string to_string() const;
-		Matrix< T, M, N > predictedStateVector(double deltaT, T stateVector, T procesError, double scalar);
 		//@}
-//		Matrix< T, M, N > predictedProcesError(double deltaT, double processorErrorX, double processorErrorY, uint16_t i);
-//		Matrix< T, M, N > KalManGain(Matrix< T, M, N> predictedProcesError, double observationErrorX, double observationErrorY);
-//		Matrix< T, M, N > measureMent(double stateVectorFuture, double procesErrorFuture);
-//		Matrix< T, M, N > adjustedStateVector(Matrix< T, M, N > predictedStateVector, Matrix< T, 2, 2 > KalManGain, Matrix< T, M, N > measureMent);
-//		Matrix< T, M, N > adjustedProcesError(Matrix< T, M, N > KalManGain, Matrix< T, M, N > predictedProcesError);
-//		Matrix< T, M, N > kalManFilter(std::vector<double> aVValues, std::vector<double> aXValues, double delta, double scalar,
-//				double procesErrorX, double procesErrorY, double observationErrorX, double observationErrorY);
+
 	private:
 		std::array< std::array< T, N >, M > matrix;
 };
-
-template< typename T, const std::size_t M, const std::size_t N>
-Matrix< T, M, N > predictedProcesError(double deltaT, double processorErrorX, double processorErrorY, bool firstTime);
-
-template< typename T, const std::size_t M, const std::size_t N>
-Matrix< T, M, N > KalManGain(Matrix< T, M, N> predictedProcesError, double observationErrorX, double observationErrorY);
-
-template< typename T, const std::size_t M, const std::size_t N>
-Matrix< T, M, N > measureMent(double stateVectorFuture, double procesErrorFuture);
-
-template< typename T, const std::size_t M, const std::size_t N>
-Matrix< T, M, N > adjustedStateVector(Matrix< T, M, N > predictedStateVector, Matrix< T, 2, 2 > KalManGain, Matrix< T, M, N > measureMent);
-
-template< typename T, const std::size_t M, const std::size_t N>
-Matrix< T, M, N > adjustedProcesError(Matrix< T, M, N > KalManGain, Matrix< T, M, N > predictedProcesError);
-
-template< typename T, const std::size_t M, const std::size_t N>
-std::vector<double> kalManFilter(std::vector<double> aVValues, std::vector<double> aXValues, double delta, double scalar,
-		double procesErrorX, double procesErrorY, double observationErrorX, double observationErrorY);
 
 /**
  *

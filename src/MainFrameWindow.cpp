@@ -692,7 +692,7 @@ namespace Application
 			}
 			case 1:
 			{
-				TRACE_DEVELOP("Please create your own student world 1");
+//				TRACE_DEVELOP("Please create your own student world 1");
 				break;
 			}
 			case 2:

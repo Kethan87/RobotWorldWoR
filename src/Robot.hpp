@@ -15,6 +15,7 @@
 #include "Size.hpp"
 #include "Particle.hpp"
 #include "ParticleFilter.hpp"
+#include "KalmanFilter.hpp"
 
 #include <iostream>
 #include <memory>
@@ -348,9 +349,9 @@ namespace Model
 			std::vector<OrientationPercept*> variablesCompassOdometer;
 			bool firstTimeKalman;
 
-			double processErrorX;
+			double processErrorX = Utils::MathUtils::toRadians(2);
 
-			double processErrorY;
+			double processErrorY = 1;
 
 			const int NUMBER_OF_PARTICLES = 200;
 
@@ -359,6 +360,10 @@ namespace Model
 			std::vector<Particle> particles;
 
 			ParticleFilter particleFilter;
+
+			KalmanFilter kalmanFilter;
+
+
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

@@ -9,7 +9,7 @@ namespace Model
 {
 	class ParticleFilter {
 	public:
-		ParticleFilter(std::vector<Particle> aParticlesForFilter, const uint16_t A_NUMBER_OF_PARTICLES);
+		ParticleFilter(const std::vector<Particle>& aParticlesForFilter, const uint16_t A_NUMBER_OF_PARTICLES);
 		std::vector<Particle> initializeParticleFilter();
 		std::vector<Particle> controlUpdate(double delta_x, double delta_y, double controlErrorX, double controlErrorY);
 		std::vector<Particle> measurementUpdate(PointCloud lidarMeasurements);
@@ -18,7 +18,7 @@ namespace Model
 		double calculateTotalWeight(std::vector<Particle> particlesForFilter);
 		std::vector<Particle>& operator=(const std::vector<Particle>& particles);
 		std::vector<Particle> getParticles();
-		void setParticles(std::vector<Particle>& newParticles);
+		void setParticles(const std::vector<Particle>& newParticles);
 		void getTotalWeight();
 		virtual ~ParticleFilter();
 	private:

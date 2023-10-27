@@ -35,25 +35,36 @@ int main( 	int argc,
 		Model::lidarStddev = 10;
 	} else
 	{
-		for (int i = 1; i < argc; i++) {
-			if(argc == 2)
+		std::ifstream inputFile(argv[1]);
+		if (!inputFile.is_open()) {
+		        std::cerr << "Error: Could not open the file." << std::endl;
+		        Application::Logger::log(std::string("No arguments are given. The default standard deviations, will be used."));
+		        Model::odometerSttdev = 1;
+		        Model::compasStddev = 2;
+		        Model::lidarStddev = 10;
+		        return -1;
+		  }
+		std::string line;
+		int i = 0;
+		while (std::getline(inputFile, line)) {
+			std::cout << line << std::endl;
+			if(i == 0)
 			{
-				Model::odometerSttdev = std::stoi(argv[1]);
-			} else if(argc == 3)
-			{
-				Model::odometerSttdev = std::stoi(argv[1]);
-				Model::compasStddev = std::stoi(argv[2]);
-			} else if(argc == 4) {
-				Model::odometerSttdev = std::stoi(argv[1]);
-				Model::compasStddev = std::stoi(argv[2]);
-				Model::lidarStddev = std::stoi(argv[3]);
-			} else
-			{
+				Model::odometerSttdev = std::stoi(line);
+			} else if (i == 1) {
+				Model::odometerSttdev = std::stoi(line);
+				Model::compasStddev = std::stoi(line);
+			} else if (i == 2) {
+				Model::odometerSttdev = std::stoi(line);
+				Model::compasStddev = std::stoi(line);
+				Model::lidarStddev = std::stoi(line);
+			} else {
 				Application::Logger::log(std::string("Too many arguments are given. The default standard deviations, will be used."));
 				Model::odometerSttdev = 1;
-				Model::compasStddev =2;
+				Model::compasStddev = 2;
 				Model::lidarStddev = 10;
 			}
+			i++;
 		}
 	}
 	try

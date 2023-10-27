@@ -54,9 +54,8 @@ namespace Model
 								driving(false),
 								communicating(false),
 								firstTimeKalman(true),
-								processErrorX(Utils::MathUtils::toRadians(2)),
-								processErrorY(1),
-								particleFilter(particles, NUMBER_OF_PARTICLES)
+								particleFilter(particles, NUMBER_OF_PARTICLES),
+								kalmanFilter(processErrorX, processErrorY, Utils::MathUtils::toRadians(2), 1, 1)
 	{
 		std::shared_ptr< AbstractSensor > laserSensor = std::make_shared<LaserDistanceSensor>( *this);
 		std::shared_ptr<AbstractSensor> compasOdometer = std::make_shared<CompassOdometerSensor>(*this);
@@ -498,56 +497,20 @@ namespace Model
 						{
 							OrientationPercept* orientationPerspect = dynamic_cast<OrientationPercept*>(percept.value().get());
 							std::pair<double, double>variables(orientationPerspect->angle, orientationPerspect->distance);
-//						    std::cout << "Distance 1: " << variables.second << std::endl;
-//						    std::cout << "Angle 1: " << variables.first << std::endl;
 
 						    variablesCompassOdometer.push_back(orientationPerspect);
-//						    std::cout << "SIZE: " << variablesCompassOdometer.size() << std::endl;
 						    if(variablesCompassOdometer.size() > 1)
 						    {
-						    	double oldAngle = variablesCompassOdometer.at(0)->angle;
 						    	double newAngle = variablesCompassOdometer.at(1)->angle;
-						    	double oldDistance = variablesCompassOdometer.at(0)->distance;
-						    	double newDistance = variablesCompassOdometer.at(1)->distance;
-						    	uint16_t newDeltaX =  variablesCompassOdometer.at(1)->deltaX;
 						    	uint16_t oldDeltaX =  variablesCompassOdometer.at(0)->deltaX;
-						    	uint16_t newDeltaY =  variablesCompassOdometer.at(1)->deltaY;
 						    	uint16_t oldDeltaY =  variablesCompassOdometer.at(0)->deltaY;
-						    	std::cout << "X1: " << oldDeltaX << std::endl;
-						    	std::cout << "Y1: " << oldDeltaY << std::endl;
-						    	Matrix<double, 2, 2> predictedProcesErrorCompasAndOdometer;
-						    	if(firstTimeKalman)
-						    	{
-						    		predictedProcesErrorCompasAndOdometer = predictedProcesError<double, 2, 2>(1, processErrorX, processErrorY, firstTimeKalman);
-						    		firstTimeKalman = false;
-						    	} else
-						    	{
-						    		std::cout << "NewProcessorErrorAngleGonnaUsed: " << processErrorX << std::endl;
-						    		std::cout << "NewProcessorErrorDistanceGonnaUsed: " << processErrorY << std::endl;
-						    		predictedProcesErrorCompasAndOdometer = predictedProcesError<double, 2, 2>(1, processErrorX, processErrorY, firstTimeKalman);
-						    	}
-								Matrix<double, 2, 1> predictedStateVectorCompasAndOdometer = predictedStateVector<double, 2, 1>(DELTA, oldDeltaX, oldDeltaY, 0.0);
-								Matrix<double, 2, 2> kalmanGainCompasAndOdometer = KalManGain(predictedProcesErrorCompasAndOdometer, observationErrorAngle, observationErrorDistance);
-								Matrix<double, 2, 1> measureMentCompasAndOdometer = measureMent<double, 2, 1>(newDeltaX, newDeltaY);
-								Matrix<double, 2, 1> adjustedStateVectorCompasAndOdometer = adjustedStateVector(predictedStateVectorCompasAndOdometer, kalmanGainCompasAndOdometer, measureMentCompasAndOdometer);
-								Matrix<double, 2, 2> adjustedProcesErrorCompasAndOdometer = adjustedProcesError(kalmanGainCompasAndOdometer, predictedProcesErrorCompasAndOdometer);
-
-								processErrorX = adjustedProcesErrorCompasAndOdometer.at(0, 0);
-								processErrorY = adjustedProcesErrorCompasAndOdometer.at(1, 1);
+						    	std::pair<double, double> resultDeltaXandDeltaY(kalmanFilter.kalManFilter(oldDeltaX, oldDeltaY, oldDeltaX, oldDeltaY, 0.0));
 
 								wxPoint lastPosition = Model::CompassOdometerSensor::lastPosition;
-							    wxPoint kalmanPoint{static_cast<int>(lastPosition.x + std::cos(newAngle) + adjustedStateVectorCompasAndOdometer.at(0,0)),
-							    						static_cast<int>(lastPosition.y + std::cos(newAngle) + adjustedStateVectorCompasAndOdometer.at(1,0))};
+							    wxPoint kalmanPoint{static_cast<int>(lastPosition.x + std::cos(newAngle) + resultDeltaXandDeltaY.first),
+							    						static_cast<int>(lastPosition.y + std::sin(newAngle) + resultDeltaXandDeltaY.second)};
 							    kalmanPoints.push_back(kalmanPoint);
-
-							    std::cout << "X 2: " << adjustedStateVectorCompasAndOdometer.at(0,0)  << std::endl;
-							    std::cout << "Y 2: " << adjustedStateVectorCompasAndOdometer.at(1,0) << std::endl;
-//							    std::cout << "NewProcessorErrorAngle: " << processErrorAngle << std::endl;
-//							    std::cout << "NewprocessErrorDistance: " << processErrorDistance << std::endl;
-							    if(variablesCompassOdometer.size() >= 2)
-							    {
-							    	variablesCompassOdometer.erase(variablesCompassOdometer.begin());
-							    }
+							    variablesCompassOdometer.erase(variablesCompassOdometer.begin());
 						    }
 						} else if(typeid(tempAbstractPercept) == typeid(DistancePercept))
 						{
@@ -556,7 +519,7 @@ namespace Model
 						} else if(typeid(tempAbstractPercept) == typeid(DistancePercepts) && Model::CompassLidarSensor::particleFilter)
 						{
 							DistancePercepts* distancePercepts = dynamic_cast<DistancePercepts*>(percept.value().get());
-							for(int i = 0; i < distancePercepts->pointCloud.size(); ++i)
+							for(unsigned long int i = 0; i < distancePercepts->pointCloud.size(); ++i)
 							{
 								if(currentLidarRadarPointCloud.size() < distancePercepts->pointCloud.size())
 								{
@@ -586,9 +549,9 @@ namespace Model
 							std::vector<Particle> newParticles = particleFilter.resampling();
 							particleFilter.setParticles(newParticles);
 
-						} else if(!Model::CompassOdometerSensor::kalmanFilter)
+						} else if(!Model::CompassOdometerSensor::kalmanFilter || !Model::CompassLidarSensor::particleFilter)
 						{
-							Application::Logger::log(std::string("Every filter is Off"));
+							//USED FOR NO UKNOWN TYPES OF PERCEPTS
 						} else
 						{
 							Application::Logger::log(std::string("Unknown type of percept:") + typeid(tempAbstractPercept).name());

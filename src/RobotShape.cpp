@@ -12,6 +12,7 @@
 #include "Trace.hpp"
 #include "CompassLidarSensor.hpp"
 #include "CompassOdometerSensor.hpp"
+#include "Particle.hpp"
 
 #include <cmath>
 
@@ -279,15 +280,19 @@ namespace View
 	 */
 	void RobotShape::drawLidar(wxDC& dc)
 	{
-		double angle = Utils::Shape2DUtils::getAngle( getRobot()->getFront());
-		angle = Utils::MathUtils::toDegrees(angle);
 		for(const Model::DistancePercept &d : getRobot()->getCurrentLidarCloud())
 		{
 			if (d.point != wxDefaultPosition || (d.point.x != Model::noObject && d.point.y != Model::noObject))
 			{
-				dc.SetPen( wxPen(  "YELLOW", borderWidth, wxPENSTYLE_SOLID));dc.DrawCircle( d.point, 1);
+				dc.SetPen( wxPen(  "YELLOW", borderWidth, wxPENSTYLE_SOLID));
 				dc.DrawLine(centre.x, centre.y, centre.x + d.point.x, centre.y + d.point.y);
 			}
+		}
+
+		dc.SetPen( wxPen(  "GREEN", borderWidth, wxPENSTYLE_SOLID));
+		for(int i = 0; i < static_cast<int>(getRobot()->getParticleFilter().getParticles().size()); ++i)
+		{
+			dc.DrawCircle( getRobot()->getParticleFilter().getParticles().at(i).getPosition(), 1);
 		}
 	}
 

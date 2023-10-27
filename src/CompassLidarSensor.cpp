@@ -53,7 +53,6 @@ namespace Model
 				{
 				wxPoint wallPoint1 = wall->getPoint1();
 				wxPoint wallPoint2 = wall->getPoint2();
-				std::vector<std::pair<double, double>> anglesAndDistances;
 				    wxPoint laserEndpoint{static_cast<int>(robotLocation.x + std::cos(currentAngle) * LASERBEAM_LENGTH) ,
 				    					static_cast<int>(robotLocation.y + std::sin(currentAngle) * LASERBEAM_LENGTH )};
 				    wxPoint interSection = Utils::Shape2DUtils::getIntersection(wallPoint1,wallPoint2,robotLocation,laserEndpoint);

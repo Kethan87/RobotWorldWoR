@@ -289,7 +289,7 @@ namespace Model
 			RobotWorld::getRobotWorld().newWall( coordinates[i], coordinates[i + 1],false);
 		}
 
-		RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(850, 500),false); // @suppress("Avoid magic numbers")
+		RobotWorld::getRobotWorld().newGoal( "Goal", wxPoint(900, 680),false); // @suppress("Avoid magic numbers")
 		
 
 		notifyObservers();

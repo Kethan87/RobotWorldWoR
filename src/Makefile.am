@@ -51,7 +51,9 @@ robotworld_SOURCES 	= 	AbstractActuator.cpp	\
 						ParticleFilter.hpp	\
 						ParticleFilter.cpp	\
 						OrientationStimulus.hpp	\
-						OrientationStimulus.cpp
+						OrientationStimulus.cpp	\
+						KalmanFilter.hpp	\
+						KalmanFilter.cpp
 
 robotworld_CPPFLAGS 	=	$(AM_CPPFLAGS) $(ROBOTWORLD_CPPFLAGS) $(WX_CPPFLAGS)
 

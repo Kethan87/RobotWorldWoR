@@ -22,7 +22,7 @@ public:
 	wxPoint getPosition();
 	void setPosition(wxPoint newPosition);
 	PointCloud getLidarMeasurements();
-	void setLidarMeasurements(PointCloud newLidarMeasurements);
+	void setLidarMeasurements(const PointCloud& newLidarMeasurements);
 	double getWeight();
 	void setWeight(double newWeight);
 	double getLidarStddev();
@@ -31,10 +31,10 @@ public:
 private:
 	wxPoint position;
 	double weight;
-	double lastWeight;
 	PointCloud lidarMeasurements;
 	double lidarStddev;
 	const int LASERBEAM_LENGTH;
+	const int LASERBEAMS = 180;
 };
 
 }
