@@ -294,18 +294,18 @@ namespace View
 	void RobotShape::drawParticles(wxDC& dc)
 	{
 		dc.SetPen( wxPen(  "GREEN", borderWidth, wxPENSTYLE_SOLID));
-		for(int i = 0; i < static_cast<int>(getRobot()->particleFilter.getParticles().size()); ++i)
+		for(int i = 0; i < static_cast<int>(getRobot()->getParticleFilter().getParticles().size()); ++i)
 		{
-			dc.DrawCircle( getRobot()->particleFilter.getParticles().at(i).getPosition(), 1);
+			dc.DrawCircle( getRobot()->getParticleFilter().getParticles().at(i).getPosition(), 1);
 		}
 	}
 
 	void RobotShape::drawKalmanPoints(wxDC& dc)
 	{
 		dc.SetPen( wxPen(  "RED", borderWidth, wxPENSTYLE_SOLID));
-		for(int i = 0; i < static_cast<int>(getRobot()->kalmanPoints.size()); ++i)
+		for(int i = 0; i < static_cast<int>(getRobot()->getKalmanPoints().size()); ++i)
 		{
-			dc.DrawCircle( getRobot()->kalmanPoints.at(i), 1);
+			dc.DrawCircle( getRobot()->getKalmanPoints().at(i), 1);
 		}
 	}
 } // namespace View

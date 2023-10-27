@@ -20,12 +20,12 @@ namespace Model
 {
 	class Robot;
 	typedef std::shared_ptr<Robot> RobotPtr;
+	extern double lidarStddev;
 	class CompassLidarSensor : public AbstractSensor
 	{
 	public:
 		static wxPoint lastPosition;
 		static bool particleFilter;
-		static double lidarStddev;
 		explicit CompassLidarSensor(Robot& aRobot);
 
 

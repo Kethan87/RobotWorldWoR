@@ -24,8 +24,8 @@ namespace Model
 {
 
 	bool CompassLidarSensor::particleFilter = true;
-	double CompassLidarSensor::lidarStddev = 10;
 	wxPoint CompassLidarSensor::lastPosition(1025,1025);
+	double lidarStddev = 10;
 
 	CompassLidarSensor::CompassLidarSensor(Robot& aRobot) : AbstractSensor(aRobot) {
 		// TODO Auto-generated constructor stub
@@ -39,7 +39,7 @@ namespace Model
 		{
 			std::random_device rd{};
 			std::mt19937 gen{rd()};
-			std::normal_distribution<> noiseLidar{0,lidarStddev};
+			std::normal_distribution<> noiseLidar{0,Model::lidarStddev};
 			double angle = 0;
 			std::vector<WallPtr> walls = RobotWorld::getRobotWorld().getWalls();
 			Stimuli stimulus;
@@ -110,5 +110,6 @@ namespace Model
 		}
 		return std::make_shared<OrientationPercept>( noAngle,invalidDistance, 0, 0);
 	}
+
 }
 

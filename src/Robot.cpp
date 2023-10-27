@@ -479,29 +479,6 @@ namespace Model
 				front = BoundedVector( vertex.asPoint(), position);
 				position.x = vertex.x;
 				position.y = vertex.y;
-//				if(Model::CompassLidarSensor::particleFilter)
-//				{
-//					std::random_device rd;
-//					std::mt19937 gen(rd());
-//					std::uniform_real_distribution<> dis(0, 1024);
-//					particles.resize(NUMBER_OF_PARTICLES);
-//					for(int i = 0; i < NUMBER_OF_PARTICLES; ++i)
-//					{
-//						Particle particle(wxPoint(static_cast<int>(dis(gen)), static_cast<int>(dis(gen))), 1);
-//						particles.at(i) = particle;
-//						for(int j = 0; j < particle.getLidarMeasurements().size(); ++j)
-//						{
-//							std::cout << "Number Particle: " << i << " " <<  "X" << j << ": " << particle.getLidarMeasurements().at(j).point.x << std::endl;
-//							std::cout << "Number Particle: " << i << " " << "Y" << j << ": " << particle.getLidarMeasurements().at(j).point.y << std::endl;
-//						}
-//					}
-//				} else
-//				{
-//					while(!particles.empty())
-//					{
-//						particles.pop_back();
-//					}
-//				}
 
 
 				// Do the measurements / handle all percepts
@@ -730,6 +707,17 @@ namespace Model
 	PointCloud Robot::getCurrentLidarCloud()
 	{
 		return currentLidarRadarPointCloud;
+	}
+
+	std::vector<wxPoint> Robot::getKalmanPoints()
+	{
+		return kalmanPoints;
+	}
+
+
+	ParticleFilter Robot::getParticleFilter()
+	{
+		return particleFilter;
 	}
 
 } // namespace Model

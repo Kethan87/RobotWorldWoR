@@ -14,7 +14,7 @@ namespace Model
 	{
 		std::random_device rd{};
 		std::mt19937 gen{rd()};
-		std::normal_distribution<> noiseLidar{CompassLidarSensor::lidarStddev * -1,CompassLidarSensor::lidarStddev};
+		std::normal_distribution<> noiseLidar{0,Model::lidarStddev};
 		double angle = 0;
 		std::vector<WallPtr> walls = RobotWorld::getRobotWorld().getWalls();
 		PointCloud measurements;

@@ -22,6 +22,9 @@ namespace Model
 
 	wxPoint CompassOdometerSensor::lastPosition(1025, 1025);
 	bool CompassOdometerSensor::kalmanFilter = true;
+	double odometerSttdev = 1;
+	double compasStddev = 2;
+
 
 	CompassOdometerSensor::CompassOdometerSensor(Robot& aRobot) : AbstractSensor(aRobot)
 	{
@@ -35,8 +38,8 @@ namespace Model
 		{
 			std::random_device rd{};
 			std::mt19937 gen{rd()};
-		    std::normal_distribution<> noiseOdometer{odometerStddev * -1,odometerStddev};
-		    std::normal_distribution<> noiseCompass{compasStddev * -1,compasStddev};
+		    std::normal_distribution<> noiseOdometer{0,Model::odometerSttdev};
+		    std::normal_distribution<> noiseCompass{0,Model::compasStddev};
 		    wxPoint robotLocation = robot->getPosition();
 		    double randomAngleDeviation = Utils::MathUtils::toRadians(noiseCompass(gen));
 		    double angle = Utils::Shape2DUtils::getAngle(robot->getFront()) + randomAngleDeviation;
@@ -80,5 +83,8 @@ namespace Model
 		}
 		return std::make_shared<OrientationPercept>( noAngle,invalidDistance, INVALID_DELTA_X, INVALID_DELTA_Y);
 	}
+
+
+
 
 }

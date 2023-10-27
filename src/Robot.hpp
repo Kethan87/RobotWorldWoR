@@ -249,6 +249,10 @@ namespace Model
 
 			PointCloud getCurrentLidarCloud();
 
+			std::vector<wxPoint> getKalmanPoints();
+
+			ParticleFilter getParticleFilter();
+
 			/**
 			 * @name Variables for painting the sensor activity on the screen
 			 */
@@ -262,14 +266,6 @@ namespace Model
 			//Lidar
 			PointCloud currentLidarRadarPointCloud;
 			//@}
-
-			const int NUMBER_OF_PARTICLES = 200;
-
-			std::vector<wxPoint> kalmanPoints;
-
-			std::vector<Particle> particles;
-
-			ParticleFilter particleFilter;
 
 
 		protected:
@@ -355,6 +351,14 @@ namespace Model
 			double processErrorX;
 
 			double processErrorY;
+
+			const int NUMBER_OF_PARTICLES = 200;
+
+			std::vector<wxPoint> kalmanPoints;
+
+			std::vector<Particle> particles;
+
+			ParticleFilter particleFilter;
 	};
 } // namespace Model
 #endif // ROBOT_HPP_

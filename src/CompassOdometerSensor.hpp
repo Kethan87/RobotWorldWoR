@@ -19,6 +19,8 @@ namespace Model
 {
 	class Robot;
 	typedef std::shared_ptr<Robot> RobotPtr;
+	extern double odometerSttdev;
+	extern double compasStddev;
 
 
 	class CompassOdometerSensor : public AbstractSensor
@@ -37,8 +39,6 @@ namespace Model
 
 	private:
 		const int FIRSTRUN_POSITION = 1025;
-		double odometerStddev = 1;
-		double compasStddev = 2;
 
 	};
 }
