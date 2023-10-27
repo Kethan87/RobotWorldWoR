@@ -542,8 +542,6 @@ namespace Model
 								deltaY = getPosition().y - Model::CompassLidarSensor::lastPosition.y;
 								Model::CompassLidarSensor::lastPosition = getPosition();
 							}
-//							std::cout << "DELTA X: " << deltaX << std::endl;
-//							std::cout << "DELTA Y: " << deltaY << std::endl;
 							particleFilter.controlUpdate(deltaX, deltaY, 2, 2);
 							particleFilter.measurementUpdate(currentLidarRadarPointCloud);
 							std::vector<Particle> newParticles = particleFilter.resampling();
