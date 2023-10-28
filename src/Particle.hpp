@@ -16,7 +16,17 @@ class Particle {
 public:
 	Particle(wxPoint aPosition, double aWeight);
 	virtual ~Particle();
+	/**
+	 *
+	 * @param position position of the particle
+	 * @return Pointcloud within there the measurements of the lidar from the particle position
+	 */
 	PointCloud measurementLidar(wxPoint position);
+	/**
+	 *
+	 * @param particle
+	 * @return a particle that has been assigned to the given particle
+	 */
 	Particle& operator=(const Particle& particle);
 
 	wxPoint getPosition();

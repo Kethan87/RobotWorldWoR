@@ -14,6 +14,7 @@ class KalmanFilter {
 public:
 	KalmanFilter(double aProcessErrorX, double aProcessErrorY,  double anObservationErrorAngle, double anObservationErrorDistance, const uint8_t aDelta);
 
+
 	template< typename T, const std::size_t M, const std::size_t N>
 	Matrix< T, M, N > predictedStateVector(double deltaT, T stateVector, T procesError, double scalar);
 
@@ -32,7 +33,15 @@ public:
 	template< typename T, const std::size_t M, const std::size_t N>
 	Matrix< T, M, N > adjustedProcesError(Matrix< T, M, N > KalManGain, Matrix< T, M, N > predictedProcesError);
 
-
+	/**
+	 *
+	 * @param oldXValue the value deltaX of the previous situation
+	 * @param oldaYValue the value of deltaY of the previous situation
+	 * @param newXValue the value deltaX of the current situation
+	 * @param newYValue the value of deltaY of the current situation
+	 * @param scalar the scalar for the current transition matrix
+	 * @return a pair with the adjusted deltaX and deltaY from the kalmanFilter
+	 */
 	std::pair<double, double> kalManFilter(uint16_t oldXValue, uint16_t oldaYValue, uint16_t newXValue, uint16_t newYValue, double scalar);
 	virtual ~KalmanFilter();
 

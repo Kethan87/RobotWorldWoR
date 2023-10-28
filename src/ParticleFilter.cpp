@@ -39,7 +39,7 @@ namespace Model
 		return particlesForFilter;
 	}
 
-	std::vector<Particle> ParticleFilter::controlUpdate(double deltaX, double deltaY, double controlErrorX, double controlErrorY) {
+	void ParticleFilter::controlUpdate(double deltaX, double deltaY, double controlErrorX, double controlErrorY) {
 	    for (int i = 0; i < NUMBER_OF_PARTICLES; ++i) {
 
 	        double noiseX = generateRandomError(controlErrorX);
@@ -53,10 +53,9 @@ namespace Model
 
 	        particlesForFilter.at(i).setLidarMeasurements(particlesForFilter.at(i).measurementLidar(wxPoint(static_cast<int>(predicted_x), static_cast<int>(predicted_y))));
 	    }
-	    return particlesForFilter;
 	}
 
-	std::vector<Particle> ParticleFilter::measurementUpdate(PointCloud lidarMeasurements) {
+	void ParticleFilter::measurementUpdate(PointCloud lidarMeasurements) {
 		for(int i = 0; i < NUMBER_OF_PARTICLES; ++i)
 		{
 			double totalDifferenceMeasurement = 0.0;
@@ -73,7 +72,6 @@ namespace Model
 			particleWeight *= probability;
 			particlesForFilter.at(i).setWeight(particleWeight);
 		}
-		return particlesForFilter;
 	}
 
 

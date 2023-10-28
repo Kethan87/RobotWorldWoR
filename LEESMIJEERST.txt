@@ -14,4 +14,3 @@ Bijvoorbeeld "test.txt"
 10 voor de lasers van de lidar
 
 DAARNAAST!!!!! als je van particle naar kalman wilt switchen, moet je ALTIJD eerst unpopulaten->switch van filter -> populate (je kan ze ook allebei gebruiken).
-Anders zou je de applicatie opnieuw moeten starten.
